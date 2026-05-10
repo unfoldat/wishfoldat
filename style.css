@@ -6,7 +6,7 @@ body {
   line-height: 1.6;
 }
 
-/* ===== Skip link (핵심 접근성 기능) ===== */
+/* ===== Skip link ===== */
 .skip-link {
   position: absolute;
   left: 0;
@@ -20,7 +20,6 @@ body {
   text-decoration: none;
 }
 
-/* 키보드로 접근했을 때만 보이게 */
 .skip-link:focus {
   top: 10px;
 }
@@ -32,11 +31,22 @@ header, main, footer {
   padding: 24px;
 }
 
+/* ⭐ 핵심 수정: header 내부 흐름 고정 */
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ===== Navigation ===== */
 nav ul {
   list-style: none;
   padding: 0;
+  margin: 0;
+
   display: flex;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 nav a {
@@ -44,7 +54,7 @@ nav a {
   text-decoration: none;
 }
 
-/* ===== Focus visibility (WCAG AA 핵심) ===== */
+/* ===== Focus visibility (WCAG AA) ===== */
 a:focus {
   outline: 3px solid #ffffff;
   outline-offset: 3px;
@@ -53,6 +63,7 @@ a:focus {
 /* ===== Typography ===== */
 h1 {
   font-size: 40px;
+  margin: 0;
 }
 
 h2 {
@@ -62,4 +73,5 @@ h2 {
 
 p {
   color: #e0e0e0;
+  margin: 0;
 }
