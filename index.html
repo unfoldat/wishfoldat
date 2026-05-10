@@ -1,10 +1,10 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wishfoldat</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -12,45 +12,61 @@
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header>
-  <h1>Wishfoldat</h1>
+  <div class="lang-switch">
+    <button data-lang="ko">한</button>
+    <button data-lang="en">EN</button>
+  </div>
 
-  <p class="subtitle">
-    A structured space for accessibility-driven information design.
+  <h1 data-ko="Wishfoldat" data-en="Wishfoldat">Wishfoldat</h1>
+
+  <p class="subtitle"
+     data-ko="접근성 기반 정보 설계 공간"
+     data-en="A structured space for accessibility-driven information design">
+    접근성 기반 정보 설계 공간
   </p>
 
   <nav aria-label="Main navigation">
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="archive.html">Archive</a></li>
+      <li><a href="index.html" data-ko="홈" data-en="Home">홈</a></li>
+      <li><a href="about.html" data-ko="소개" data-en="About">소개</a></li>
+      <li><a href="archive.html" data-ko="아카이브" data-en="Archive">아카이브</a></li>
     </ul>
   </nav>
 </header>
 
 <main id="main">
-
-  <section>
-    <h2>Focus</h2>
-    <p>
-      Translating visual narratives into structured, non-visual, accessible systems.
-    </p>
-  </section>
-
-  <section>
-    <h2>Contact</h2>
-    <p>
-      Email:
-      <a href="mailto:contact@wishfoldat.org">
-        contact@wishfoldat.org
-      </a>
-    </p>
-  </section>
-
+  <h2 data-ko="소개" data-en="Introduction">소개</h2>
+  <p data-ko="이곳은 정보 구조 실험 공간입니다."
+     data-en="This is a space for experimenting with information structure.">
+    이곳은 정보 구조 실험 공간입니다.
+  </p>
 </main>
 
 <footer>
   <p>© Wishfoldat</p>
 </footer>
+
+<script>
+const buttons = document.querySelectorAll(".lang-switch button");
+
+function setLang(lang) {
+  document.querySelectorAll("[data-ko]").forEach(el => {
+    el.textContent = el.dataset[lang];
+  });
+
+  document.documentElement.lang = lang;
+  localStorage.setItem("lang", lang);
+}
+
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    setLang(btn.dataset.lang);
+  });
+});
+
+const saved = localStorage.getItem("lang") || "ko";
+setLang(saved);
+</script>
 
 </body>
 </html>
