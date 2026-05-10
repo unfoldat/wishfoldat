@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #0b0c10;
+  color: #e6e6e6;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #a0a0a0;
+  margin-bottom: 40px;
+}
+
+h2 {
+  margin-top: 40px;
+  font-size: 20px;
+}
+
+a {
+  color: #7aa2ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  margin-top: 80px;
+  color: #666;
+  font-size: 12px;
+}
