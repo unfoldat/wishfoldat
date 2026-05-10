@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wishfoldat — 정보가 흐르는 길을 설계합니다</title>
+    <meta name="description" content="시각장애인의 동화책부터, 모두를 위한 정보 접근성까지. 정보 구조를 재설계합니다.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* 따뜻한 연구실 컬러 팔레트 */
+            --ivory: #F5F1E8;
+            --warm-white: #FEFDFB;
+            --deep-blue: #1E3A5F;
+            --soft-blue: #4A6FA5;
+            --warm-brown: #6B4423;
+            --light-brown: #A0826D;
+            --gold: #C9A961;
+            --shadow: rgba(30, 58, 95, 0.08);
+            --shadow-medium: rgba(30, 58, 95, 0.12);
+            
+            /* 타이포그래피 */
+            --font-serif: 'Crimson Pro', 'Noto Serif KR', serif;
+            --font-sans: 'Inter', 'Noto Sans KR', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(135deg, var(--ivory) 0%, var(--warm-white) 100%);
+            color: var(--deep-blue);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 햇살 효과 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -20%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(201, 169, 97, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* 접근성: Skip to main content */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--deep-blue);
+            color: var(--ivory);
+            padding: 8px 16px;
+            text-decoration: none;
+            z-index: 100;
+            font-weight: 600;
+        }
+        
+        .skip-link:focus {
+            top: 0;
+            outline: 3px solid var(--gold);
+            outline-offset: 2px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
+        header {
+            padding: 40px 0 40px;
+            animation: fadeIn 0.8s ease-out;
+            border-bottom: 1px solid rgba(30, 58, 95, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-center {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-center li {
+            display: inline-block;
+        }
+        
+        .nav-center a {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--soft-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-center a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-center a:hover,
+        .nav-center a:focus {
+            color: var(--deep-blue);
+        }
+        
+        .nav-center a:hover::after,
+        .nav-center a:focus::after {
+            width: 100%;
+        }
+        
+        .lang-toggle {
+            display: flex;
+            gap: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .lang-toggle button {
+            background: none;
+            border: none;
+            color: var(--soft-blue);
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: color 0.3s ease;
+            font-family: var(--font-sans);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .lang-toggle button:hover,
+        .lang-toggle button:focus {
+            color: var(--deep-blue);
+            outline: 2px solid var(--gold);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+        
+        .lang-toggle button.active {
+            color: var(--deep-blue);
+            font-weight: 600;
+        }
+        
+        .lang-toggle .separator {
+            color: var(--soft-blue);
+            opacity: 0.4;
+        }
+        
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--deep-blue);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+        
+        .logo:hover::after,
+        .logo:focus::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 100px;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+        
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--deep-blue);
+            line-height: 1.3;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--soft-blue);
+            font-weight: 400;
+            max-width: 600px;
+        }
+        
+        /* Section Styling */
+        section {
+            padding: 80px 0;
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+        
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--warm-brown);
+            margin-bottom: 32px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
+        }
+        
+        /* About Section */
+        .about-content {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 48px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        
+        .about-content p {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            margin-bottom: 24px;
+            color: var(--deep-blue);
+        }
+        
+        .about-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .highlight {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--deep-blue);
+            margin-bottom: 32px;
+            font-style: italic;
+            line-height: 1.5;
+        }
+        
+        /* Projects Section */
+        .project-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 24px var(--shadow);
+            border-left: 4px solid var(--gold);
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            box-shadow: 0 8px 32px var(--shadow-medium);
+            transform: translateY(-4px);
+        }
+        
+        .project-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            color: var(--warm-brown);
+            margin-bottom: 12px;
+        }
+        
+        .project-subtitle {
+            font-size: 1rem;
+            color: var(--soft-blue);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .project-description {
+            font-size: 1.0625rem;
+            line-height: 1.7;
+            color: var(--deep-blue);
+        }
+        
+        .coming-soon {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--deep-blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+        
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        
+        .contact-item {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 32px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .contact-item:hover,
+        .contact-item:focus-within {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: var(--gold);
+            transform: translateY(-4px);
+        }
+        
+        .contact-item h3 {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--warm-brown);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .contact-item a {
+            color: var(--deep-blue);
+            text-decoration: none;
+            font-size: 1.125rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: inline-block;
+        }
+        
+        .contact-item a:hover,
+        .contact-item a:focus {
+            color: var(--soft-blue);
+            outline: 2px solid var(--gold);
+            outline-offset: 4px;
+            border-radius: 4px;
+            padding: 2px 8px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            text-align: center;
+            color: var(--soft-blue);
+            font-size: 0.9375rem;
+            border-top: 1px solid rgba(30, 58, 95, 0.1);
+            margin-top: 80px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Focus Styles for Accessibility */
+        *:focus {
+            outline: 3px solid var(--gold);
+            outline-offset: 2px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-center {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            
+            .lang-toggle {
+                align-self: flex-end;
+            }
+            
+            .hero h1 {
+                font-size: 2.25rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+            
+            .about-content,
+            .project-card {
+                padding: 32px 24px;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* High Contrast Mode Support */
+        @media (prefers-contrast: high) {
+            .about-content,
+            .project-card,
+            .contact-item {
+                border: 2px solid var(--deep-blue);
+            }
+        }
+        
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">본문으로 바로가기</a>
+    
+    <div class="container">
+        <header>
+            <nav aria-label="주 메뉴">
+                <a href="/" class="logo" aria-label="wishfoldat 홈으로">wishfoldat</a>
+                
+                <ul class="nav-center">
+                    <li lang="ko"><a href="#about">About</a></li>
+                    <li lang="ko"><a href="#approach">Approach</a></li>
+                    <li lang="ko"><a href="#projects">Projects</a></li>
+                    <li lang="ko"><a href="#notes">Notes</a></li>
+                    <li lang="ko"><a href="#contact">Contact</a></li>
+                    
+                    <li lang="en" style="display:none;"><a href="#about">About</a></li>
+                    <li lang="en" style="display:none;"><a href="#approach">Approach</a></li>
+                    <li lang="en" style="display:none;"><a href="#projects">Projects</a></li>
+                    <li lang="en" style="display:none;"><a href="#notes">Notes</a></li>
+                    <li lang="en" style="display:none;"><a href="#contact">Contact</a></li>
+                </ul>
+                
+                <div class="lang-toggle">
+                    <button onclick="setLang('ko')" class="active" aria-label="한국어">한</button>
+                    <span class="separator">/</span>
+                    <button onclick="setLang('en')" aria-label="English">ENG</button>
+                </div>
+            </nav>
+        </header>
+        
+        <main id="main">
+            <section class="hero">
+                <h1>정보가 흐르는 길을<br>설계합니다</h1>
+                <p class="hero-subtitle">시각장애인의 동화책부터, 모두를 위한 정보 접근성까지</p>
+            </section>
+            
+            <section id="about">
+                <h2 class="section-title" lang="ko">About</h2>
+                <h2 class="section-title" lang="en" style="display:none;">About</h2>
+                <div class="about-content">
+                    <div lang="ko">
+                        <p class="highlight">"시각장애인은 그림책을 어떻게 읽을까?"</p>
+                        
+                        <p>책을 좋아합니다. 그래서 점자도서관에 도서 입력 봉사가 있다는 걸 알고 한번 가봤습니다.</p>
+                        
+                        <p>거기서 충격을 받았습니다. 책 한 권이 점자로 변환되는 데 걸리는 시간, 그리고 표지의 저자 얼굴을 묘사하면서 든 생각—동화책의 그림들은 어떻게 전달될까?</p>
+                        
+                        <p>왜 보이는 것을 전달할 수 없을까요? 그림은 분명히 어떤 정보와 의미를 전달하고 있는데 말이죠.</p>
+                        
+                        <p>이것은 단순히 "글자를 점자로 바꾸는" 문제가 아니었습니다. 시각적 표현에서 의미를 찾는 방법도 모르고, 정보를 적절히 추출할 수도 없었습니다. 이것은 <strong>정보 구조(Information Architecture)</strong>의 문제였습니다.</p>
+                        
+                        <p>wishfoldat는 이 질문에서 시작해, 정보가 형태를 바꿀 때 의미를 어떻게 보존할 수 있는지 탐구합니다.</p>
+                    </div>
+                    
+                    <div lang="en" style="display:none;">
+                        <p class="highlight">"How do visually impaired people read picture books?"</p>
+                        
+                        <p>I love books. So when I learned there was a volunteer opportunity for book digitization at a braille library, I decided to try it.</p>
+                        
+                        <p>I was shocked. The time it takes to convert a single book into braille, and while describing the author's face on the cover, a thought struck me—how are the pictures in children's books conveyed?</p>
+                        
+                        <p>Why can't we convey what we see? Pictures clearly communicate information and meaning.</p>
+                        
+                        <p>This wasn't simply about "converting text to braille." We didn't know how to find meaning in visual expressions, nor how to properly extract information. This was an <strong>Information Architecture</strong> problem.</p>
+                        
+                        <p>wishfoldat began with this question, exploring how to preserve meaning when information changes form.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="approach">
+                <h2 class="section-title" lang="ko">Approach</h2>
+                <h2 class="section-title" lang="en" style="display:none;">Approach</h2>
+                <div class="about-content">
+                    <div lang="ko">
+                        <p>접근성은 누구나 스스로 정보에 접근하고 자신에 맞게 조작 가능하며, 상호작용할 수 있는 것입니다.</p>
+                        
+                        <p>wishfoldat는 정보 구조(Information Architecture) 접근으로 이 문제를 풉니다. 시각적 표현을 단순히 선형 텍스트로 바꾸는 것이 아니라, 정보의 의미를 보존하면서 접근 가능한 형태로 재구조화합니다.</p>
+                    </div>
+                    
+                    <div lang="en" style="display:none;">
+                        <p>Accessibility means anyone can access information independently, manipulate it to suit their needs, and interact with it.</p>
+                        
+                        <p>wishfoldat solves this through an Information Architecture approach. Rather than simply converting visual representations into linear text, we restructure information into accessible forms while preserving its meaning.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="projects">
+                <h2 class="section-title" lang="ko">Projects</h2>
+                <h2 class="section-title" lang="en" style="display:none;">Projects</h2>
+                
+                <article class="project-card">
+                    <div lang="ko">
+                        <h3>iRead</h3>
+                        <p class="project-subtitle">시각장애인도 읽을 수 있는 인터랙티브 그림책</p>
+                        <p class="project-description">
+                            그림책의 시각적 표현 유형을 수집하고, 이를 정보구조 재설계를 통해 인터랙티브하게 체험할 수 있도록 합니다.
+                            각 표현이 어떻게 접근 가능한 형태로 변환될 수 있는지 탐구합니다.
+                        </p>
+                        <span class="coming-soon">Coming Soon</span>
+                    </div>
+                    
+                    <div lang="en" style="display:none;">
+                        <h3>iRead</h3>
+                        <p class="project-subtitle">Interactive picture books accessible to the visually impaired</p>
+                        <p class="project-description">
+                            We collect visual expression patterns from picture books and make them interactively accessible through information architecture redesign.
+                            Exploring how each expression can be transformed into accessible forms.
+                        </p>
+                        <span class="coming-soon">Coming Soon</span>
+                    </div>
+                </article>
+                
+                <div style="padding: 32px; background: rgba(255,255,255,0.3); border-radius: 12px; text-align: center; color: var(--soft-blue); font-style: italic;">
+                    <span lang="ko">이 연구는 Unfold 프로젝트로 확장되고 있습니다</span>
+                    <span lang="en" style="display:none;">This research is expanding into the Unfold project</span>
+                </div>
+            </section>
+            
+            <section id="notes">
+                <h2 class="section-title" lang="ko">Notes</h2>
+                <h2 class="section-title" lang="en" style="display:none;">Notes</h2>
+                <div class="about-content" style="text-align: center;">
+                    <p lang="ko" style="font-size: 1.125rem; color: var(--soft-blue); margin: 0;">
+                        개발일지와 개념 노트가 하이퍼텍스트로 연결된 공간
+                    </p>
+                    <p lang="en" style="display:none; font-size: 1.125rem; color: var(--soft-blue); margin: 0;">
+                        A space where development journals and concept notes connect through hypertext
+                    </p>
+                    <span class="coming-soon" style="margin-top: 24px;">Coming Soon</span>
+                </div>
+            </section>
+            
+            <section id="contact">
+                <h2 class="section-title" lang="ko">Contact</h2>
+                <h2 class="section-title" lang="en" style="display:none;">Contact</h2>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <h3>Email</h3>
+                        <a href="mailto:contact@wishfoldat.org">contact@wishfoldat.org</a>
+                    </div>
+                    <div class="contact-item">
+                        <h3>Social</h3>
+                        <a href="https://instagram.com/unfoldat" target="_blank" rel="noopener noreferrer">@unfoldat</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p lang="ko">&copy; 2025 wishfoldat. 정보는 모두를 위한 것입니다.</p>
+            <p lang="en" style="display:none;">&copy; 2025 wishfoldat. Information is for everyone.</p>
+        </footer>
+    </div>
+    
+    <script>
+        function setLang(lang) {
+            // HTML 속성 설정
+            document.documentElement.setAttribute('data-lang', lang);
+            
+            // 모든 lang 속성 요소 숨기기
+            document.querySelectorAll('[lang]').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // 선택된 언어만 표시
+            document.querySelectorAll(`[lang="${lang}"]`).forEach(el => {
+                // 부모 요소의 display 속성 확인
+                const parent = el.parentElement;
+                if (parent.tagName === 'LI') {
+                    el.style.display = 'list-item';
+                } else if (parent.classList.contains('about-content') || 
+                           parent.classList.contains('project-card') ||
+                           parent.style.textAlign === 'center') {
+                    el.style.display = 'block';
+                } else if (el.tagName === 'H2' || el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'DIV') {
+                    el.style.display = 'block';
+                } else {
+                    el.style.display = '';
+                }
+            });
+            
+            // 버튼 active 상태 변경
+            document.querySelectorAll('.lang-toggle button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // localStorage에 저장
+            localStorage.setItem('preferred-lang', lang);
+        }
+        
+        // 페이지 로드 시 저장된 언어 설정 복원
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferred-lang') || 'ko';
+            if (savedLang === 'en') {
+                // 영어 버튼 클릭 시뮬레이션
+                const enBtn = document.querySelector('.lang-toggle button[onclick*="en"]');
+                if (enBtn) {
+                    enBtn.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
