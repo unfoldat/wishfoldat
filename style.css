@@ -6,33 +6,37 @@ body {
   line-height: 1.6;
 }
 
-/* Skip link (WCAG 핵심) */
+/* ===== Skip link (핵심 접근성 기능) ===== */
 .skip-link {
   position: absolute;
-  top: -40px;
   left: 0;
+  top: -50px;
   background: #ffffff;
-  color: #000;
-  padding: 8px;
-  z-index: 100;
+  color: #000000;
+  padding: 10px 14px;
+  font-weight: bold;
+  z-index: 1000;
+  border-radius: 4px;
+  text-decoration: none;
 }
 
+/* 키보드로 접근했을 때만 보이게 */
 .skip-link:focus {
-  top: 0;
+  top: 10px;
 }
 
-/* Layout */
+/* ===== Layout ===== */
 header, main, footer {
   max-width: 760px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px;
 }
 
 nav ul {
   list-style: none;
   padding: 0;
   display: flex;
-  gap: 15px;
+  gap: 16px;
 }
 
 nav a {
@@ -40,18 +44,13 @@ nav a {
   text-decoration: none;
 }
 
-/* WCAG: focus visibility */
+/* ===== Focus visibility (WCAG AA 핵심) ===== */
 a:focus {
   outline: 3px solid #ffffff;
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
-/* better readability contrast */
-p {
-  color: #e0e0e0;
-}
-
-/* headings hierarchy */
+/* ===== Typography ===== */
 h1 {
   font-size: 40px;
 }
@@ -59,4 +58,8 @@ h1 {
 h2 {
   margin-top: 40px;
   font-size: 22px;
+}
+
+p {
+  color: #e0e0e0;
 }
